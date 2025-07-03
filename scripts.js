@@ -33,6 +33,7 @@ navLinks.forEach(link => {
 
 // Intersection Observer for Animations
 const sections = document.querySelectorAll('.chapter');
+
 const observerOptions = {
     root: null,
     rootMargin: '0px',
@@ -106,24 +107,10 @@ function updateActiveNavLink() {
     });
 }
 
-// Dark Mode Toggle
-const darkModeToggle = document.getElementById('dark-mode-toggle');
-
-darkModeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    const isDarkMode = document.body.classList.contains('dark-mode');
-    localStorage.setItem('darkMode', isDarkMode);
-    
-    // Update toggle icon
-    darkModeToggle.textContent = isDarkMode ? '☀️' : '🌙';
-});
-
-// Load Dark Mode Preference
+// Load JavaScript loaded class for animations
 window.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('darkMode') === 'true') {
-        document.body.classList.add('dark-mode');
-        darkModeToggle.textContent = '☀️';
-    }
+    // Add JavaScript loaded class for animations
+    document.body.classList.add('js-loaded');
 });
 
 // Chart Initialization
