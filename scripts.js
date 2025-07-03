@@ -2,8 +2,10 @@
 const navLinks = document.querySelectorAll('.sidebar-nav nav ul li a');
 const floatingNavToggle = document.getElementById('floating-nav-toggle');
 const sidebarNav = document.getElementById('sidebar-nav');
+const bottomTabNav = document.getElementById('bottom-tab-nav');
+const tabItems = document.querySelectorAll('.tab-item');
 
-// Floating Navigation Toggle
+// Floating Navigation Toggle (for desktop)
 floatingNavToggle.addEventListener('click', () => {
     sidebarNav.classList.toggle('active');
 });
@@ -17,12 +19,39 @@ document.addEventListener('click', (e) => {
     }
 });
 
+// Bottom Tab Navigation
+tabItems.forEach(tab => {
+    tab.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetSection = tab.getAttribute('data-section');
+        const targetElement = document.getElementById(targetSection);
+        
+        if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth' });
+            
+            // Update active tab
+            tabItems.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+        }
+    });
+});
+
 navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
         const targetId = link.getAttribute('href').substring(1);
         const targetSection = document.getElementById(targetId);
         targetSection.scrollIntoView({ behavior: 'smooth' });
+        
+        // Update bottom tab if on mobile
+        if (window.innerWidth <= 768) {
+            tabItems.forEach(tab => {
+                if (tab.getAttribute('data-section') === targetId) {
+                    tabItems.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                }
+            });
+        }
         
         // Close mobile sidebar after navigation
         if (window.innerWidth <= 768) {
@@ -102,6 +131,16 @@ function updateActiveNavLink() {
             if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
                 navLinks.forEach(l => l.classList.remove('active'));
                 link.classList.add('active');
+                
+                // Update bottom tabs on mobile
+                if (window.innerWidth <= 768) {
+                    tabItems.forEach(tab => {
+                        if (tab.getAttribute('data-section') === targetId) {
+                            tabItems.forEach(t => t.classList.remove('active'));
+                            tab.classList.add('active');
+                        }
+                    });
+                }
             }
         }
     });
